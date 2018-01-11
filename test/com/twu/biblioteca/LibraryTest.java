@@ -1,28 +1,28 @@
 package com.twu.biblioteca;
 
 
-import org.junit.Before;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
 
 public class LibraryTest {
 
-    InputStream inputWatch = new InputStream() {
+
+    private InputStream inputWatch = new InputStream() {
         @Override
         public int read() throws IOException {
             return 0;
         }
     };
 
-    ByteArrayOutputStream greetingStream = new ByteArrayOutputStream();
+    private ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 
-    PrintStream outputWatch = new PrintStream(greetingStream);
+    private PrintStream outputWatch = new PrintStream(byteStream);
 
-    Library library = new Library(inputWatch, outputWatch);
+    private Library library = new Library(inputWatch, outputWatch);
 
 
     @Test
@@ -30,10 +30,41 @@ public class LibraryTest {
         library.printGreeting();
         outputWatch.flush();
 
-        String whatWasPrinted = greetingStream.toString();
+        String whatWasPrinted = byteStream.toString();
 
         assertEquals("Hello, library user!\n", whatWasPrinted);
 
     }
 
+    @Test
+    public void testLoad() {
+        library.load();
+        outputWatch.flush();
+        String whatWasPrinted = byteStream.toString();
+
+        assertEquals("Hello, library user!\n", whatWasPrinted);
+
+    }
+
+    @Test
+
+    public void testBookList(){
+        library.loadBookList();
+        outputWatch.flush();
+        String bookListPrinted = byteStream.toString();
+
+        assertEquals("1. The Great Gatsby\n", bookListPrinted);
+    }
+
+    @Test
+
+    public void testLoadMenu(){
+        library.loadMenuOptions();
+        outputWatch.flush();
+        String menuOptionsPrinted = byteStream.toString();
+        assertEquals("1. Book List\n", menuOptionsPrinted);
+
+    }
 }
+
+

@@ -32,7 +32,7 @@ public class Library {
     public void load(){
         printGreeting();
         loadMenuOptions();
-        parseMenuOptionSelection();
+        returnMenuSelection(parseMenuOptionSelection());
 
     }
 
@@ -79,10 +79,27 @@ public class Library {
             case "1":
                 loadBookList();
                 break;
+            case "9":
+                output.println("Thank you for using Biblioteca!");
+                quitApplication();
             default:
                 output.println("Select a valid option!");
 
             }
         }
 
+    protected void closeAllStreams()  {
+        inputScanner.remove();
+        inputScanner.close();
+        output.close();
+        try {
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void quitApplication() {
+        System.exit(0);
+    }
 }

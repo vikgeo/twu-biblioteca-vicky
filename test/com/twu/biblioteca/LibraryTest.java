@@ -1,6 +1,7 @@
 package com.twu.biblioteca;
 
 
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.annotation.Resource;
@@ -11,24 +12,34 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+import static org.
 
 public class LibraryTest {
 
+    private PrintStream outputWatch;
+    private Scanner initialInputsScanner;
+    private StringBuilder inputStringBuilder;
+    private ByteArrayOutputStream outputByteStream;
+    Library library;
 
 
-    private ByteArrayOutputStream outputByteStream = new ByteArrayOutputStream();
-    private PrintStream outputWatch = new PrintStream(outputByteStream);
-    ArrayList<String> greatGatsby = new ArrayList<>(Arrays.asList("The Great Gatsby", "F. Scott Fitzgerald", "1925"));
-    ArrayList<Book> bookList = new ArrayList<>(Arrays.asList(new Book(greatGatsby)));
+    @Before
+    public void initializeInputAndOutputSteamAndLibrary(){
+        outputByteStream = new ByteArrayOutputStream();
+        outputWatch = new PrintStream(outputByteStream);
+        ArrayList<String> greatGatsby = new ArrayList<>(Arrays.asList("The Great Gatsby", "F. Scott Fitzgerald", "1925"));
+        ArrayList<Book> bookList = new ArrayList<>(Arrays.asList(new Book(greatGatsby)));
 
-    String initialInputs = "1";
-    InputStream initialInputByteStream = new ByteArrayInputStream(initialInputs.getBytes(StandardCharsets.UTF_8));
-    Scanner initialInputsScanner = new Scanner(initialInputByteStream).useDelimiter("'");
-    private Library library = new Library(System.in, outputWatch, initialInputsScanner, bookList);
+        String initialInputs = "1";
+        InputStream initialInputByteStream = new ByteArrayInputStream(initialInputs.getBytes(StandardCharsets.UTF_8));
+        initialInputsScanner = new Scanner(initialInputByteStream).useDelimiter("'");
+        library = new Library(System.in, outputWatch, initialInputsScanner, bookList);
 
 
-    StringBuilder inputStringBuilder = new StringBuilder();
-
+       inputStringBuilder = new StringBuilder();
+    }
 
 
     @Resource
@@ -56,7 +67,8 @@ public class LibraryTest {
         outputWatch.flush();
         String whatWasPrinted = outputByteStream.toString();
 
-        assertEquals("Hello, library user!\nPlease type a number to choose one of the following options:\n1. Book List\n", whatWasPrinted);
+        assertEquals("Hello, library user!\nPlease type a number to choose one of the following options:\n1. " +
+                "Book List\n" + "1. The Great Gatsby F. Scott Fitzgerald 1925\n", whatWasPrinted);
 
     }
 
@@ -114,6 +126,36 @@ public class LibraryTest {
         assertEquals("Select a valid option!\n", whatWasPrinted);
 
     }
+
+//    @Test
+//    public void testQuittingApp(){
+//        library.quitApplication();
+//        assertNull(library);
+ //   }
+
+    @Test
+    public void testClosingStreams(){
+        library.closeAllStreams();
+        assertNull(outputWatch);
+    }
+//
+//    @Test
+//    public void testAppCloseInputStream(){
+//        String parsedMenuSelection = "9";
+//        library.returnMenuSelection(parsedMenuSelection);
+//        assertNull(System.in);
+//        assertNull(initialInputsScanner);
+//    }
+//
+//    @Test
+//    public void testAppCloseOutputStream(){
+//        String parsedMenuSelection = "9";
+//        library.returnMenuSelection(parsedMenuSelection);
+//        assertNull(System.in);
+//    }
+
+
+
 
 
 }

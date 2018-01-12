@@ -7,6 +7,8 @@ public class Book {
     private String bookAuthorName;
     private String yearPublished;
 
+
+
     public Book(ArrayList<String> bookData){
         this.bookTitle = bookData.get(0);
         this.bookAuthorName = bookData.get(1);
@@ -26,4 +28,5 @@ public class Book {
     public String getYearPublished() {
         return yearPublished;
     }
+
 }

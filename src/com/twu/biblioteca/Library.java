@@ -16,17 +16,17 @@ public class Library {
 
 
 
-    public Library(InputStream input, PrintStream output){
+    public Library(InputStream input, PrintStream output, Scanner inputScanner){
         this.output = output;
         this.input = input;
-        inputScanner = new Scanner(input);
+        this.inputScanner = inputScanner;
     }
 
-    public Library(InputStream input, PrintStream output, ArrayList<Book> bookList){
+    public Library(InputStream input, PrintStream output, Scanner inputScanner, ArrayList<Book> bookList){
         this.output = output;
         this.input = input;
         this.bookList = bookList;
-        inputScanner = new Scanner(input);
+        this.inputScanner = inputScanner;
     }
 
     public void load(){
@@ -64,24 +64,25 @@ public class Library {
     }
 
     protected String parseMenuOptionSelection() {
-        //StringBuilder inputStringBuilder = new StringBuilder();
+        StringBuilder inputStringBuilder = new StringBuilder();
 
-//        if (inputScanner.hasNext()){
-//        } else {
-//            while (inputScanner.hasNext()){
-//                inputStringBuilder.append(inputScanner.next().toString());
-//            }
-//        }return inputStringBuilder.toString();
-
-        int selection;
-
-        try {
-            selection = inputScanner.nextInt();
-        } catch (Exception e) {
-            selection = -1;
-            output.println("Select a valid option!");
-            inputScanner.next(); // discard the input
+        while (inputScanner.hasNext()){
+            inputStringBuilder.append(inputScanner.next().toString());
         }
-        return String.valueOf(selection);
+
+        return inputStringBuilder.toString();
+
     }
+
+    public void returnMenuSelection(String userMenuSelection) {
+        switch (userMenuSelection){
+            case "1":
+                loadBookList();
+                break;
+            default:
+                output.println("Select a valid option!");
+
+            }
+        }
+
 }

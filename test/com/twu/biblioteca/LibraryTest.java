@@ -20,20 +20,21 @@ public class LibraryTest {
     private PrintStream outputWatch = new PrintStream(outputByteStream);
     ArrayList<String> greatGatsby = new ArrayList<>(Arrays.asList("The Great Gatsby", "F. Scott Fitzgerald", "1925"));
     ArrayList<Book> bookList = new ArrayList<>(Arrays.asList(new Book(greatGatsby)));
-    private Library library = new Library(System.in, outputWatch, bookList);
+
+    String initialInputs = "1";
+    InputStream initialInputByteStream = new ByteArrayInputStream(initialInputs.getBytes(StandardCharsets.UTF_8));
+    Scanner initialInputsScanner = new Scanner(initialInputByteStream).useDelimiter("'");
+    private Library library = new Library(System.in, outputWatch, initialInputsScanner, bookList);
 
 
-    String correctInput = "1";
-    InputStream inputByteStream = new ByteArrayInputStream(correctInput.getBytes(StandardCharsets.UTF_8));
-    Scanner inputScanner = new Scanner(inputByteStream).useDelimiter("'");
     StringBuilder inputStringBuilder = new StringBuilder();
 
 
 
     @Resource
     public String scanAndSaveInputsToString(){
-        while (inputScanner.hasNext()){
-            inputStringBuilder.append(inputScanner.next().toString());
+        while (initialInputsScanner.hasNext()){
+            inputStringBuilder.append(initialInputsScanner.next().toString());
         }
         return inputStringBuilder.toString();
     }
@@ -87,12 +88,30 @@ public class LibraryTest {
     }
 
     @Test
-    public void testCorrectMenuParsing(){
-        //library.loadMenuOptions();
+    public void testCorrectMenuSelectionParsing(){
         String parsedMenuSelection = library.parseMenuOptionSelection();
-
         assertEquals("1", parsedMenuSelection);
 
+    }
+
+    @Test
+    public void testCorrectMenuSelection() {
+        String parsedMenuSelection = "1";
+        library.returnMenuSelection(parsedMenuSelection);
+        outputWatch.flush();
+        String whatWasPrinted = outputByteStream.toString();
+
+        assertEquals("1. The Great Gatsby F. Scott Fitzgerald 1925\n", whatWasPrinted);
+    }
+
+    @Test
+    public void testWrongMenuSelectionParsing(){
+        String parsedMenuSelection = "We have kittens";
+        library.returnMenuSelection(parsedMenuSelection);
+        outputWatch.flush();
+        String whatWasPrinted = outputByteStream.toString();
+
+        assertEquals("Select a valid option!\n", whatWasPrinted);
 
     }
 

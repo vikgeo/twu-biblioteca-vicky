@@ -1,12 +1,15 @@
 package com.twu.biblioteca;
 
+import java.util.Scanner;
+
 public class BibliotecaApp {
 
 
 
     public static void main(String[] args) {
 
-        Library BibliotecaLibrary = new Library(System.in, System.out);
+        Scanner inputScanner = new Scanner(System.in);
+        Library BibliotecaLibrary = new Library(System.in, System.out, inputScanner);
         BibliotecaLibrary.load();
 
     }

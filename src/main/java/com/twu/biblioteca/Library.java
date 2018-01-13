@@ -9,12 +9,11 @@ public class Library {
 
     protected InputStream input;
     protected PrintStream output;
-    private static String _greeting = "Hello, library user!\nPlease type a number to choose one of the following options:";
+    private static String _greeting = StringsUsed.GREETING;
     private static String[] _menuOptions = {"Book List"};
     private Scanner inputScanner;
-    protected ArrayList<Book> availableBooksList = new ArrayList<>();;
-    protected ArrayList<Book> checkedOutBooksList = new ArrayList<>();
-
+    private ArrayList<Book> availableBooksList = new ArrayList<>();;
+    private ArrayList<Book> checkedOutBooksList = new ArrayList<>();
 
 
 
@@ -34,7 +33,8 @@ public class Library {
     public void load(){
         printGreeting();
         loadMenuOptions();
-        returnMenuSelection(parseKeyboardInputs());
+        String menuChoice= parseKeyboardInputs();
+        returnMenuSelection(menuChoice);
 
     }
 
@@ -89,21 +89,14 @@ public class Library {
             case "1":
                 loadBookList();
                 break;
-            case "9":
-                output.println("Thank you for using Biblioteca!");
+            case "Q":
+                output.println(StringsUsed.QUITMESSAGE);
                 quitApplication();
             default:
-                output.println("Select a valid option!");
+                output.println(StringsUsed.INVALID_MENU_SELECTION);
 
             }
         }
-
-
-    public void quitApplication() {
-        System.exit(0);
-    }
-
-
 
     public Book checkIfBookOnBookList(String bookToCheckOut) {
         Book bookFound = null;
@@ -120,11 +113,11 @@ public class Library {
 
     public void checkOutBook(Book bookToCheckOut) {
         if (bookToCheckOut == null) {
-            output.println("That book is not available.");
+            output.println(StringsUsed.UNAVAILABLE_BOOK);
         } else {
             availableBooksList.remove(bookToCheckOut);
             checkedOutBooksList.add(bookToCheckOut);
-            output.println("Thank you! Enjoy the book");
+            output.println(StringsUsed.SUCCESSFUL_CHECKOUT);
 
         }
     }
@@ -132,7 +125,7 @@ public class Library {
 
     public void returnBook(Book bookToReturn) {
         if (bookToReturn == null) {
-            output.println("That is not a valid book to return.");
+            output.println(StringsUsed.CANNOT_RETURN);
         } else {
             checkedOutBooksList.remove(bookToReturn);
             availableBooksList.add(bookToReturn);
@@ -140,4 +133,11 @@ public class Library {
 
         }
     }
+
+    public void quitApplication() {
+        System.exit(0);
+    }
+
+
+
 }

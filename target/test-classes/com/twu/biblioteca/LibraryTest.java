@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 import static org.mockito.Mockito.mock;
@@ -24,6 +26,8 @@ public class LibraryTest {
     private StringBuilder inputStringBuilder;
     private ByteArrayOutputStream outputByteStream;
     Library library;
+    Book gatsbyBook;
+    ArrayList<Book> bookList;
 
 
     @Before
@@ -31,7 +35,8 @@ public class LibraryTest {
         outputByteStream = new ByteArrayOutputStream();
         outputWatch = new PrintStream(outputByteStream);
         ArrayList<String> greatGatsby = new ArrayList<>(Arrays.asList("The Great Gatsby", "F. Scott Fitzgerald", "1925"));
-        ArrayList<Book> bookList = new ArrayList<>(Arrays.asList(new Book(greatGatsby)));
+        gatsbyBook = new Book(greatGatsby);
+        bookList = new ArrayList<>(Arrays.asList(gatsbyBook));
 
         String initialInputs = "1";
         InputStream initialInputByteStream = new ByteArrayInputStream(initialInputs.getBytes(StandardCharsets.UTF_8));
@@ -44,11 +49,11 @@ public class LibraryTest {
 
 
     @Resource
-    public String scanAndSaveInputsToString(){
-        while (initialInputsScanner.hasNext()){
-            inputStringBuilder.append(initialInputsScanner.next().toString());
+    public String scanAndSaveInputsToString(Scanner inputs, StringBuilder stringBuilder){
+        while (inputs.hasNext()){
+            stringBuilder.append(inputs.next().toString());
         }
-        return inputStringBuilder.toString();
+        return stringBuilder.toString();
     }
 
     @Test
@@ -95,7 +100,7 @@ public class LibraryTest {
     @Test
     public void testMenuChoiceInput(){
         library.loadMenuOptions();
-        String inputsReceived = scanAndSaveInputsToString();
+        String inputsReceived = scanAndSaveInputsToString(initialInputsScanner, inputStringBuilder);
         assertEquals("1", inputsReceived);
         
     }
@@ -140,13 +145,38 @@ public class LibraryTest {
     }
 
     @Test
-    public void testBookCheckout(){
+    public void testFindingBookOnList(){
+
+        String initialInputs = "The Great Gatsby";
+        InputStream initialInputByteStream = new ByteArrayInputStream(initialInputs.getBytes(StandardCharsets.UTF_8));
+        Scanner bookInputsScanner = new Scanner(initialInputByteStream).useDelimiter("'");
+        Library libraryBookCheckout = new Library(System.in, outputWatch, bookInputsScanner, bookList);
+
+        String bookParsed = libraryBookCheckout.parseKeyboardInputs();
+        Book bookToCkeckout = libraryBookCheckout.checkIfBookAvailable(bookParsed);
+
+        assertEquals(bookToCkeckout, gatsbyBook);
 
     }
 
+    @Test
+    public void testRemovingBookFromAvailableListAndAddingToCkeckedOut() {
+
+        String initialInputs = "The Great Gatsby";
+        InputStream initialInputByteStream = new ByteArrayInputStream(initialInputs.getBytes(StandardCharsets.UTF_8));
+        Scanner bookInputsScanner = new Scanner(initialInputByteStream).useDelimiter("'");
+        Library libraryBookCheckout = new Library(System.in, outputWatch, bookInputsScanner, bookList);
+
+        String bookParsed = libraryBookCheckout.parseKeyboardInputs();
+        Book bookToCkeckout = libraryBookCheckout.checkIfBookAvailable(bookParsed);
+        libraryBookCheckout.checkOutBook(bookToCkeckout);
 
 
+        assertTrue(libraryBookCheckout.getAvailableBooksList().isEmpty());
+        assertTrue(libraryBookCheckout.getCheckedOutBooksList().contains(gatsbyBook));
 
+
+    }
 
 }
 

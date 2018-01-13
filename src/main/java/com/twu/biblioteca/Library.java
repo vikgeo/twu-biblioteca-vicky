@@ -2,6 +2,7 @@ package com.twu.biblioteca;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Library {
@@ -9,9 +10,10 @@ public class Library {
     protected InputStream input;
     protected PrintStream output;
     private static String _greeting = "Hello, library user!\nPlease type a number to choose one of the following options:";
-    ArrayList<Book> availableBooksList;
     private static String[] _menuOptions = {"Book List"};
     private Scanner inputScanner;
+    protected ArrayList<Book> availableBooksList = new ArrayList<>();;
+    protected ArrayList<Book> checkedOutBooksList = new ArrayList<>();
 
 
 
@@ -34,6 +36,14 @@ public class Library {
         loadMenuOptions();
         returnMenuSelection(parseKeyboardInputs());
 
+    }
+
+    public ArrayList<Book> getAvailableBooksList(){
+        return availableBooksList;
+    }
+
+    public ArrayList<Book> getCheckedOutBooksList(){
+        return checkedOutBooksList;
     }
 
 
@@ -101,5 +111,31 @@ public class Library {
 
     public void quitApplication() {
         System.exit(0);
+    }
+
+
+
+    public Book checkIfBookAvailable(String bookToCheckOut) {
+        Book bookFound = null;
+        for (Iterator<Book> i = getAvailableBooksList().iterator(); i.hasNext();) {
+            Book book = i.next();
+            if (book.getTitle().equals(bookToCheckOut)){
+                getCheckedOutBooksList().add(book);
+                bookFound = book;
+                break;
+            }
+        } if (bookFound == null){
+            output.println("That book is not available.");
+        }
+        return bookFound;
+    }
+
+    public void checkOutBook(Book bookToCheckOut) {
+        if (bookToCheckOut != null){
+            availableBooksList.remove(bookToCheckOut);
+            checkedOutBooksList.add(bookToCheckOut);
+            output.println("Thank you! Enjoy the book");
+
+        }
     }
 }

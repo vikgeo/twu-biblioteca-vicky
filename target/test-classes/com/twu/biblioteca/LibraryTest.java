@@ -141,7 +141,6 @@ public class LibraryTest {
 
     @Test
     public void testBookCheckout(){
-        library.parseKeyboardInputs();
 
     }
 

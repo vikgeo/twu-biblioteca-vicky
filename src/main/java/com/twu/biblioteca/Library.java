@@ -9,7 +9,7 @@ public class Library {
     protected InputStream input;
     protected PrintStream output;
     private static String _greeting = "Hello, library user!\nPlease type a number to choose one of the following options:";
-    ArrayList<Book> bookList;
+    ArrayList<Book> availableBooksList;
     private static String[] _menuOptions = {"Book List"};
     private Scanner inputScanner;
 
@@ -25,14 +25,14 @@ public class Library {
     public Library(InputStream input, PrintStream output, Scanner inputScanner, ArrayList<Book> bookList){
         this.output = output;
         this.input = input;
-        this.bookList = bookList;
+        this.availableBooksList = bookList;
         this.inputScanner = inputScanner;
     }
 
     public void load(){
         printGreeting();
         loadMenuOptions();
-        returnMenuSelection(parseMenuOptionSelection());
+        returnMenuSelection(parseKeyboardInputs());
 
     }
 
@@ -44,7 +44,7 @@ public class Library {
 
     protected void loadBookList() {
         int listPosition = 1;
-        for (Book book:bookList
+        for (Book book: availableBooksList
                 ) {
             output.print(listPosition + ". " + book.getTitle() + " " + book.getAuthorName() + " " +
                     book.getYearPublished()  +"\n");
@@ -63,7 +63,7 @@ public class Library {
         }
     }
 
-    protected String parseMenuOptionSelection() {
+    protected String parseKeyboardInputs() {
         StringBuilder inputStringBuilder = new StringBuilder();
 
         while (inputScanner.hasNext()){

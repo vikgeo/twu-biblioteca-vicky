@@ -98,16 +98,6 @@ public class Library {
             }
         }
 
-    protected void closeAllStreams()  {
-        inputScanner.remove();
-        inputScanner.close();
-        output.close();
-        try {
-            input.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void quitApplication() {
         System.exit(0);
@@ -115,7 +105,7 @@ public class Library {
 
 
 
-    public Book checkIfBookAvailable(String bookToCheckOut) {
+    public Book checkIfBookOnBookList(String bookToCheckOut) {
         Book bookFound = null;
         for (Iterator<Book> i = getAvailableBooksList().iterator(); i.hasNext();) {
             Book book = i.next();
@@ -124,17 +114,29 @@ public class Library {
                 bookFound = book;
                 break;
             }
-        } if (bookFound == null){
-            output.println("That book is not available.");
         }
         return bookFound;
     }
 
     public void checkOutBook(Book bookToCheckOut) {
-        if (bookToCheckOut != null){
+        if (bookToCheckOut == null) {
+            output.println("That book is not available.");
+        } else {
             availableBooksList.remove(bookToCheckOut);
             checkedOutBooksList.add(bookToCheckOut);
             output.println("Thank you! Enjoy the book");
+
+        }
+    }
+
+
+    public void returnBook(Book bookToReturn) {
+        if (bookToReturn == null) {
+            output.println("That is not a valid book to return.");
+        } else {
+            checkedOutBooksList.remove(bookToReturn);
+            availableBooksList.add(bookToReturn);
+            output.println("Thank you for returning the book.");
 
         }
     }

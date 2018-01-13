@@ -153,7 +153,7 @@ public class LibraryTest {
         Library libraryBookCheckout = new Library(System.in, outputWatch, bookInputsScanner, bookList);
 
         String bookParsed = libraryBookCheckout.parseKeyboardInputs();
-        Book bookToCkeckout = libraryBookCheckout.checkIfBookAvailable(bookParsed);
+        Book bookToCkeckout = libraryBookCheckout.checkIfBookOnBookList(bookParsed);
 
         assertEquals(bookToCkeckout, gatsbyBook);
 
@@ -168,12 +168,31 @@ public class LibraryTest {
         Library libraryBookCheckout = new Library(System.in, outputWatch, bookInputsScanner, bookList);
 
         String bookParsed = libraryBookCheckout.parseKeyboardInputs();
-        Book bookToCkeckout = libraryBookCheckout.checkIfBookAvailable(bookParsed);
+        Book bookToCkeckout = libraryBookCheckout.checkIfBookOnBookList(bookParsed);
         libraryBookCheckout.checkOutBook(bookToCkeckout);
 
 
         assertTrue(libraryBookCheckout.getAvailableBooksList().isEmpty());
         assertTrue(libraryBookCheckout.getCheckedOutBooksList().contains(gatsbyBook));
+
+
+    }
+
+    @Test
+    public void testRemovingBookFromCheckedOutListAndAddingThemAvailable() {
+
+        String initialInputs = "The Great Gatsby";
+        InputStream initialInputByteStream = new ByteArrayInputStream(initialInputs.getBytes(StandardCharsets.UTF_8));
+        Scanner bookInputsScanner = new Scanner(initialInputByteStream).useDelimiter("'");
+        Library libraryBookCheckout = new Library(System.in, outputWatch, bookInputsScanner, bookList);
+
+        String bookParsed = libraryBookCheckout.parseKeyboardInputs();
+        Book bookToReturn = libraryBookCheckout.checkIfBookOnBookList(bookParsed);
+        libraryBookCheckout.returnBook(bookToReturn);
+
+
+        assertTrue(libraryBookCheckout.getAvailableBooksList().contains(gatsbyBook));
+        assertTrue(libraryBookCheckout.getCheckedOutBooksList().isEmpty());
 
 
     }

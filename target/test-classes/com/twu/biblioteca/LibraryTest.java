@@ -140,6 +140,6 @@ public class LibraryTest {
     public void testClosingStreams() {
         String parsedMenuSelection = "Q";
         mockLibrary.returnMenuSelection(parsedMenuSelection);
-        //need to think of a way to test it actually quits
+        //need to figure out a way to test it actually quits
     }
 }

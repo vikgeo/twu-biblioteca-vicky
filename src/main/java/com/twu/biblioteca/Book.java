@@ -9,10 +9,10 @@ public class Book {
 
 
 
-    public Book(ArrayList<String> bookData){
-        this.bookTitle = bookData.get(0);
-        this.bookAuthorName = bookData.get(1);
-        this.yearPublished = bookData.get(2);
+    public Book(String bookTitle, String authorName, String yearPublished){
+        this.bookTitle = bookTitle;
+        this.bookAuthorName = authorName;
+        this.yearPublished = yearPublished;
 
     }
 

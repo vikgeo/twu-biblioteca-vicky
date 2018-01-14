@@ -7,12 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class BookTest {
-    ArrayList<String> greatGatsby = new ArrayList<>(Arrays.asList("The Great Gatsby", "F. Scott Fitzgerald", "1925"));
-    ArrayList<String> hitchhikersGuide = new ArrayList<>(Arrays.asList("The Hitchhiker\'s Guide to the Galaxy",
-            "Douglas Adams", "1978"));
 
-    Book testBook = new Book(greatGatsby);
-    Book secondTestBook = new Book(hitchhikersGuide);
+
+    Book testBook = new Book("The Great Gatsby", "F. Scott Fitzgerald", "1925");
+    Book secondTestBook = new Book("The Great Gatsby", "F. Scott Fitzgerald", "1925");
 
     @Test
     public void testGetTitle(){

@@ -33,8 +33,7 @@ public class CheckoutAndReturnTest {
 
         outputByteStream = new ByteArrayOutputStream();
         outputWatch = new PrintStream(outputByteStream);
-        ArrayList<String> greatGatsby = new ArrayList<>(Arrays.asList("The Great Gatsby", "F. Scott Fitzgerald", "1925"));
-        gatsbyBook = new Book(greatGatsby);
+        gatsbyBook = new Book("The Great Gatsby", "F. Scott Fitzgerald", "1925");
         bookList = new ArrayList<>(Arrays.asList(gatsbyBook));
 
         String initialInputs = "The Great Gatsby";
